@@ -12,8 +12,20 @@
       command: docker rm -f ansible-nodejs-container
       ignore_errors: true
 
+    - name: "docker tag image"
+      command: docker tag ansible-nodejs-img moha983/ansible-nodejs:latest
+
+    - name: "docker login to docker hub"
+      shell: echo "$DOCKER_PASSWORD" | docker login -u "moha983" --password-stdin
+      environment:
+        DOCKER_PASSWORD: "{{ lookup('env', 'DOCKER_PASSWORD') }}"
+
+    - name: "docker push image to docker hub"
+      command: docker push moha983/ansible-nodejs:latest  
+
     - name: "run docker container from image"
       command: docker run -d -p 3000:3000 --name ansible-nodejs-container ansible-nodejs-img  
+
 
 
     - name : "show running docker container "
