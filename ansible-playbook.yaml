@@ -1,0 +1,33 @@
+--- 
+- name: "build container with ansible"
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name:  "build docker image with ansible"
+      command: docker build -t ansible-nodejs-img .
+
+    - name: "remove old docker container if exists"
+      command: docker rm -f ansible-nodejs-container
+      ignore_errors: true
+
+    - name: "run docker container from image"
+      command: docker run -d -p 3000:3000 --name ansible-nodejs-container ansible-nodejs-img  
+
+
+    - name : "show running docker container "
+      command: docker ps -a
+
+    - name : "show docker images "
+      command: docker images 
+
+    # - name: "docker stop container " 
+    #   command: docker stop ansible-nodejs-container
+
+
+    # - name: " docker remove container  "
+    #   command: docker rm -f ansible-nodejs-container
+    
+    # - name : "docker remove image "
+    #   command: docker rmi -f ansible-nodejs-img  
