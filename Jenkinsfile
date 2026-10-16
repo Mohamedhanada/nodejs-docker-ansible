@@ -8,7 +8,12 @@ pipeline {
         stage('Docker Login') {
             steps {
                 // Add --password-stdin to run docker login command non-interactively
-                bat 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                     usernameVariable: 'DOCKER_USERNAME',
+                      passwordVariable: 'DOCKER_PASSWORD')]) {
+                    bat "echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin"
+                }
             }
         }
         stage('Build & push Dockerfile') {
