@@ -37,7 +37,22 @@ jobs:
             - name: Run Code Quality Checks
               run: |
                node --check index.js         
+     
+    securityscan:
+        runs-on: ubuntu-latest
+        needs: [build,codequality]
+        steps:
+            - uses: actions/checkout@v6
 
+            - name: Set up Node_js
+              uses: actions/setup-node@v6
+              with:
+                node-version: '16'
+
+            - name: Run Security Scan
+              run: |
+                npm audit --audit-level=high
+                
 
                 
     docker-test:
