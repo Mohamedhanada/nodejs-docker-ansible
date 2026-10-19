@@ -99,8 +99,8 @@ jobs:
          
         - name: list ansible playbook 
           run: |
-            ansible-playbook playbook.yml --list-tasks
+            ansible-playbook playbook.yaml --list-tasks
             
         - name: Run ansible playbook 
           run: |
-            ansible-playbook playbook.yml --check    
+            ansible-playbook playbook.yaml --check    
