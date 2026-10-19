@@ -20,7 +20,7 @@ jobs:
 
             - name: Run Tests
               run: |
-                npm test
+                npm run
 
     docker-test:
         runs-on: ubuntu-latest
