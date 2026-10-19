@@ -22,6 +22,26 @@ jobs:
               run: |
                 npm run
 
+
+    codequality:
+        runs-on: ubuntu-latest
+        needs: [build]
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Set up Node_js
+              uses: actions/setup-node@v6
+              with:
+                node-version: '16'
+                cache: npm
+
+            - name: Run Code Quality Checks
+              run: |
+                npm run lint
+                npm run test-coverage            
+
+
+                
     docker-test:
         runs-on: ubuntu-latest
         needs: [build]  #دي عشان اقولوا ان الخطوة دي محتاجة الخطوة اللي فوقها تخلص الاول 
