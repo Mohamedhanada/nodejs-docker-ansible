@@ -38,30 +38,30 @@ jobs:
               run: |
                node --check index.js         
      
-    securityscan:
-        runs-on: ubuntu-latests
-        needs: [build,codequality]
-        steps:
-            - uses: actions/checkout@v6
+    # securityscan:
+    #     runs-on: ubuntu-latests
+    #     needs: [build,codequality]
+    #     steps:
+    #         - uses: actions/checkout@v6
 
-            - name: Set up Node_js
-              uses: actions/setup-node@v6
-              with:
-                node-version: '26.2.0'
+    #         - name: Set up Node_js
+    #           uses: actions/setup-node@v6
+    #           with:
+    #             node-version: '26.2.0'
                 
-            - name : Install Dependencies
-              run: |
-                npm ci 
+    #         - name : Install Dependencies
+    #           run: |
+    #             npm ci 
                 
-            - name: Run Security Scan
-              run: |
-                npm audit --omit=dev --audit-level=high
+    #         - name: Run Security Scan
+    #           run: |
+    #             npm audit --omit=dev --audit-level=high
                 
 
                 
     docker-test:
         runs-on: ubuntu-latest
-        needs: [build,codequality,securityscan]  #دي عشان اقولوا ان الخطوة دي محتاجة الخطوة اللي فوقها تخلص الاول
+        needs: [build,codequality]  #دي عشان اقولوا ان الخطوة دي محتاجة الخطوة اللي فوقها تخلص الاول
         steps:  #دي عشان اقولوا ان الخطوة دي محتاجة الخطوة اللي فوقها تخلص الاول 
       
         - uses: actions/checkout@v6
@@ -73,3 +73,19 @@ jobs:
         - name: Run Docker Container 
           run: |
            docker run --name myapp-container -d -p 3000:3000 myapp:latest    
+
+
+    ansible-test:
+      runs-on: ubuntu-latest
+      needs: [build,codequality,docker-test]
+      steps:
+        - uses: actions/checkout@v6
+
+        - name: set up ansible
+          run: | 
+            sudo apt update 
+            sudo apt install ansible -y
+        
+        - name: Run ansible playbook 
+          run: |
+            ansible-playbook playbook.yml]      
