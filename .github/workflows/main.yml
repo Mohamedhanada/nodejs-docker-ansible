@@ -95,7 +95,7 @@ jobs:
 
         - name: validate ansible playbook 
           run: |
-            ansible-playbook playbook.yml   --syntax-check    
+            ansible-playbook playbook.yaml   --syntax-check    
          
         - name: list ansible playbook 
           run: |
